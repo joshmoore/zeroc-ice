@@ -35,11 +35,3 @@ Ice.Warn.Connections=1
 # 1 = trace messages
 #
 #IceSSL.Trace.Security=1
-
-#
-# SSL Configuration
-#
-Ice.Plugin.IceSSL=IceSSL.PluginFactory
-IceSSL.DefaultDir=../../../../certs
-IceSSL.Keystore=server.jks
-IceSSL.Password=password

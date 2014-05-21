@@ -38,6 +38,26 @@ public class Client extends Ice.Application
             "?: help\n");
     }
 
+    static java.util.Random r = new java.util.Random();
+
+    private static Ice.Identity
+    mkident()
+    {
+        Ice.Identity ident;
+        ident = new Ice.Identity();
+        ident.category = "";
+        ident.name = "callbackReceiver";
+        int size = 20;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            int c = r.nextInt(255);
+            char ch = (char)(33+c%(127-33));
+            sb.append(ch);
+        }
+        ident.category = sb.toString();
+        return ident;
+    }
+
     public int
     run(String[] args)
     {
@@ -64,12 +84,20 @@ public class Client extends Ice.Application
         }
 
         Ice.ObjectAdapter adapter = communicator().createObjectAdapter("Callback.Client");
-        adapter.add(new CallbackReceiverI(), communicator().stringToIdentity("callbackReceiver"));
         adapter.activate();
 
-        CallbackReceiverPrx receiver = 
-            CallbackReceiverPrxHelper.uncheckedCast(adapter.createProxy(
-                communicator().stringToIdentity("callbackReceiver")));
+        CallbackReceiverPrx receiver = null;
+        boolean test = true;
+        while (test) {
+            Ice.Identity ident = mkident();
+            adapter.add(new CallbackReceiverI(), ident);
+            receiver =
+                CallbackReceiverPrxHelper.uncheckedCast(adapter.createProxy(ident));
+            String proxyString = communicator().proxyToString(receiver);
+            System.out.println("initiating with " + proxyString);
+            sender.initiateCallbackByString(proxyString);
+            adapter.remove(ident);
+        }
 
         menu();
 
@@ -89,7 +117,8 @@ public class Client extends Ice.Application
                 }
                 if(line.equals("t"))
                 {
-                    sender.initiateCallback(receiver);
+                    String proxyString = communicator().proxyToString(receiver);
+                    sender.initiateCallbackByString(proxyString);
                 }
                 else if(line.equals("s"))
                 {

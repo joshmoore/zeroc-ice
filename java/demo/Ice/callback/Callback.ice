@@ -20,6 +20,7 @@ interface CallbackReceiver
 interface CallbackSender
 {
     void initiateCallback(CallbackReceiver* proxy);
+    void initiateCallbackByString(string proxy);
     void shutdown();
 };
 

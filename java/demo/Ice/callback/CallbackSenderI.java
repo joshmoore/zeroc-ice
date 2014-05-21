@@ -26,6 +26,24 @@ public final class CallbackSenderI extends _CallbackSenderDisp
     }
 
     public void
+    initiateCallbackByString(String proxyString, Ice.Current current)
+    {
+        System.out.println("initiating callback:" + proxyString);
+        try
+        {
+            CallbackReceiverPrx proxy =
+                CallbackReceiverPrxHelper.uncheckedCast(
+                    current.adapter.getCommunicator().stringToProxy(proxyString));
+            proxy.callback();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            current.adapter.getCommunicator().destroy();
+        }
+    }
+
+    public void
     shutdown(Ice.Current current)
     {
         System.out.println("Shutting down...");
