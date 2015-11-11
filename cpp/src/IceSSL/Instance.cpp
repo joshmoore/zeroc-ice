@@ -989,7 +989,7 @@ IceSSL::Instance::traceConnection(SSL* ssl, bool incoming)
 {
     Trace out(_logger, _securityTraceCategory);
     out << "SSL summary for " << (incoming ? "incoming" : "outgoing") << " connection\n";
-    SSL_CIPHER* cipher = SSL_get_current_cipher(ssl);
+    const SSL_CIPHER* cipher = SSL_get_current_cipher(ssl);
     if(!cipher)
     {
         out << "unknown cipher\n";

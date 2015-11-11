@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <cstring>
+#include <unistd.h>
 
 #ifndef _WIN32
 #   include <sys/wait.h>

@@ -65,10 +65,6 @@ operator<(const MapKey& lhs, const MapKey& rhs)
         ((lhs.communicator == rhs.communicator) && (lhs.envName < rhs.envName));
 }
 
-#if DB_VERSION_MAJOR != 4
-#error Freeze requires DB 4.x
-#endif
-
 #if DB_VERSION_MINOR < 3
 void
 dbErrCallback(const char* prefix, char* msg)

@@ -8,6 +8,7 @@
 // **********************************************************************
 
 #include <Slice/FileTracker.h>
+#include <unistd.h>
 
 #ifdef __sun
 #   include <unistd.h>
